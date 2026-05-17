@@ -241,28 +241,6 @@
             document.getElementById('form-modal').style.display = 'flex';
         }
 
-        function submitGame() {
-            const name = document.getElementById('player-name').value.trim();
-            if (!name) { alert("Entre ton prénom !"); return; }
-            let score = 0;
-            GAME_DATA.forEach(item => { if (assignments[item.id] === item.movie) score++; });
-
-            if (SCRIPT_URL !== "METS_TON_URL_ICI") {
-                fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ player: name, score: score, total: 22, date: new Date().toLocaleString('fr-FR') })
-                }).catch(e => console.log(e));
-            }
-
-            document.getElementById('modal-box-content').innerHTML = `
-                <h3 style="color: #e5a93b; font-size: 1.8rem;">Merci ${name} !</h3>
-                <div style="font-size: 3.5rem; font-weight: bold; margin: 20px 0; color: #64d2ff;">${score} / 22</div>
-                <p style="color: #cbd5e1; margin-bottom: 20px; font-size: 0.9rem;">Ton score a été enregistré. Rejoue pour t'améliorer, les détails des erreurs restent masqués !</p>
-                <button onclick="window.location.reload()">Rejouer 🔄</button>
-            `;
-        }
         window.onload = initGame;
     </script>
 </body>
