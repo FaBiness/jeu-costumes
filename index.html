@@ -16,7 +16,14 @@
         header { text-align: center; padding: 15px 5px; background: #1e1e24; border-radius: 12px; margin-bottom: 15px; border: 1px solid #2d2d34; }
         header h1 { font-size: 1.5rem; color: #e5a93b; margin-bottom: 5px; }
         header p { font-size: 0.85rem; color: #94a3b8; }
-        .game-container { display: grid; grid-template-columns: 1fr 1.2fr 1fr; gap: 10px; max-width: 1200px; margin: 0 auto; }
+        .game-container { 
+            display: grid; 
+            grid-template-columns: 1fr 1.2fr 1fr; 
+            gap: 10px; 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            align-items: start; /* ✨ Cette ligne permet aux colonnes de flotter */
+        }
         .costumes-column { display: flex; flex-direction: column; gap: 12px; }
         .movies-column { background-color: #1e1e24; padding: 12px; border-radius: 12px; border: 1px solid #2d2d34; position: sticky; top: 10px; }
         .movies-column h2 { font-size: 1.1rem; text-align: center; color: #e5a93b; margin-bottom: 12px; border-bottom: 1px solid #2d2d34; padding-bottom: 6px; }
