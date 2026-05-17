@@ -6,7 +6,13 @@
     <title>Le Jeu des Costumes de Cinéma</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
-        body { background-color: #121214; color: #e2e8f0; padding: 10px; min-height: 100vh; }
+        body {
+            background-color: #121214;
+            color: #e2e8f0;
+            padding: 10px;
+            padding-bottom: 80px; /* Ajoute cet espace pour le bouton */
+            min-height: 100vh;
+        }
         header { text-align: center; padding: 15px 5px; background: #1e1e24; border-radius: 12px; margin-bottom: 15px; border: 1px solid #2d2d34; }
         header h1 { font-size: 1.5rem; color: #e5a93b; margin-bottom: 5px; }
         header p { font-size: 0.85rem; color: #94a3b8; }
@@ -22,9 +28,32 @@
         .movie-list { display: flex; flex-direction: column; gap: 6px; }
         .movie-btn { background-color: #25252c; color: #cbd5e1; border: 1px solid #334155; padding: 10px 8px; border-radius: 6px; font-size: 0.85rem; text-align: left; cursor: pointer; width: 100%; }
         .movie-btn.linked { background-color: #1a2e1a; color: #64d2ff; border-color: #22543d; text-decoration: line-through; opacity: 0.5; }
-        .actions { text-align: center; grid-column: 1 / -1; margin: 20px 0; }
-        .validate-btn { background-color: #e5a93b; color: #121214; font-weight: bold; font-size: 1.1rem; padding: 12px 35px; border: none; border-radius: 8px; cursor: pointer; width: 100%; max-width: 300px; }
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); z-index: 100; justify-content: center; align-items: center; padding: 10px; }
+        /* Section du Bouton de Validation Flottant */
+        .actions {
+            position: fixed;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 90;
+            width: 90%;
+            max-width: 300px;
+            text-align: center;
+            margin: 0;
+        }
+
+        .validate-btn {
+            background-color: #e5a93b;
+            color: #121214;
+            font-weight: bold;
+            font-size: 1.1rem;
+            padding: 12px 35px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+        }
+        .modal {display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); z-index: 100; justify-content: center; align-items: center; padding: 10px; }
         .modal-content { max-width: 100%; max-height: 90vh; border-radius: 8px; }
         .form-box { background-color: #1e1e24; padding: 25px; border-radius: 12px; border: 1px solid #334155; width: 90%; max-width: 400px; text-align: center; }
         .form-box input { width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 6px; border: 1px solid #475569; background-color: #0f172a; color: white; font-size: 1rem; }
@@ -76,31 +105,31 @@
         // Remplace simplement les liens "https://picsum.photos/..." par les URL de tes photos.
         const GAME_DATA = [
             { id: 1, movie: "TRON", image: "https://i.postimg.cc/J4C4PVCS/1.jpg" },
-            { id: 2, movie: "BREAKING BAD", image: "https://picsum.photos/id/15/400/500" },
-            { id: 3, movie: "BATMAN LE DÉFI", image: "https://picsum.photos/id/22/400/500" },
-            { id: 4, movie: "BATMAN FOREVER", image: "https://picsum.photos/id/25/400/500" },
-            { id: 5, movie: "FORREST GUMP", image: "https://picsum.photos/id/28/400/500" },
-            { id: 6, movie: "LE SEPTIÈME FILS", image: "https://picsum.photos/id/30/400/500" },
-            { id: 7, movie: "L'HOMME AU MASQUE DE FER", image: "https://picsum.photos/id/42/400/500" },
-            { id: 8, movie: "DEMOLITION MAN", image: "https://picsum.photos/id/48/400/500" },
-            { id: 9, movie: "LES 8 SALOPARDS", image: "https://picsum.photos/id/52/400/500" },
-            { id: 10, movie: "V - THE SERIES", image: "https://picsum.photos/id/56/400/500" },
-            { id: 11, movie: "STARSHIP TROOPERS", image: "https://picsum.photos/id/63/400/500" },
-            { id: 12, movie: "THE ARTIST", image: "https://picsum.photos/id/65/400/500" },
-            { id: 13, movie: "THE HUNGER GAMES", image: "https://picsum.photos/id/74/400/500" },
-            { id: 14, movie: "ALERTE ! (OUTBREAK)", image: "https://picsum.photos/id/78/400/500" },
-            { id: 15, movie: "PREDATOR", image: "https://picsum.photos/id/82/400/500" },
-            { id: 16, movie: "STARGATE", image: "https://picsum.photos/id/88/400/500" },
-            { id: 17, movie: "LE DERNIER EMPEREUR", image: "https://picsum.photos/id/92/400/500" },
-            { id: 18, movie: "LA PLANÈTE DES SINGES", image: "https://picsum.photos/id/96/400/500" },
-            { id: 19, movie: "GLADIATOR", image: "https://picsum.photos/id/102/400/500" },
-            { id: 20, movie: "IL FAUT SAUVER LE SOLDAT RYAN", image: "https://picsum.photos/id/104/400/500" },
-            { id: 21, movie: "LES VALEURS DE LA FAMILLE ADDAMS", image: "https://picsum.photos/id/112/400/500" },
-            { id: 22, movie: "DIE HARD 2 - 58 MINUTES POUR VIVRE", image: "https://picsum.photos/id/122/400/500" }
+            { id: 2, movie: "BREAKING BAD", image: "https://i.postimg.cc/N5SR2Bfx/2.jpg" },
+            { id: 3, movie: "BATMAN LE DÉFI", image: "https://i.postimg.cc/svq5GsDL/3.jpg" },
+            { id: 4, movie: "BATMAN FOREVER", image: "https://i.postimg.cc/FYS3j87T/4.jpg" },
+            { id: 5, movie: "FORREST GUMP", image: "https://i.postimg.cc/dhCr8pLn/5.jpg" },
+            { id: 6, movie: "LE SEPTIÈME FILS", image: "https://i.postimg.cc/JsXZbvG6/6.jpg" },
+            { id: 7, movie: "L'HOMME AU MASQUE DE FER", image: "https://i.postimg.cc/18Fwp2fY/7.jpg" },
+            { id: 8, movie: "DEMOLITION MAN", image: "https://i.postimg.cc/CR8kjXzQ/8.jpg" },
+            { id: 9, movie: "LES 8 SALOPARDS", image: "https://i.postimg.cc/BjFHxkXz/9.jpg" },
+            { id: 10, movie: "V - THE SERIES", image: "https://i.postimg.cc/RqP79crS/10.jpg" },
+            { id: 11, movie: "STARSHIP TROOPERS", image: "https://i.postimg.cc/qzz87zr9/11.jpg" },
+            { id: 12, movie: "THE ARTIST", image: "https://i.postimg.cc/CzzjKzYp/12.jpg" },
+            { id: 13, movie: "THE HUNGER GAMES", image: "https://i.postimg.cc/2VV45VmD/13.jpg" },
+            { id: 14, movie: "ALERTE ! (OUTBREAK)", image: "https://i.postimg.cc/RNNc0N94/14.jpg" },
+            { id: 15, movie: "PREDATOR", image: "https://i.postimg.cc/Yhh1ShkW/15.jpg" },
+            { id: 16, movie: "STARGATE", image: "https://i.postimg.cc/ZC26v4Ky/16.jpg" },
+            { id: 17, movie: "LE DERNIER EMPEREUR", image: "https://i.postimg.cc/7ffgLfDS/17.jpg" },
+            { id: 18, movie: "LA PLANÈTE DES SINGES", image: "https://i.postimg.cc/JGvjHM4j/18.jpg" },
+            { id: 19, movie: "GLADIATOR", image: "https://i.postimg.cc/KRwt3xvD/19.jpg" },
+            { id: 20, movie: "IL FAUT SAUVER LE SOLDAT RYAN", image: "https://i.postimg.cc/3dV20YJ1/20.jpg" },
+            { id: 21, movie: "LES VALEURS DE LA FAMILLE ADDAMS", image: "https://i.postimg.cc/9D9ZGKrb/21.jpg" },
+            { id: 22, movie: "DIE HARD 2 - 58 MINUTES POUR VIVRE", image: "https://i.postimg.cc/3dV20YJn/22.jpg" }
         ];
 
         // COLLE TON URL DE DEPLOIEMENT GOOGLE SCRIPT ENTRE LES GUILLEMETS DES QUE TU L'AS
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbybWhG9LwkM5aH1O7mSctRaJt0c3stoXfpryBNXicfZDZIKoUqzFL8R4Ifd2Tp1__uzkw/exec";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxnuQe_P3VwfH_8wNJRdP-IuLagSX1q3FS_yo4xmdhbRDYGvfRXo0_te6bDhUhE-K_iWw/exec";
 
         let selectedCostumeId = null;
         let assignments = {}; 
@@ -136,6 +165,36 @@
                 movieContainer.appendChild(btn);
             });
         }
+
+        function submitGame() {
+            const name = document.getElementById('player-name').value.trim();
+            if (!name) { alert("Entre ton prénom !"); return; }
+            let score = 0;
+            GAME_DATA.forEach(item => { if (assignments[item.id] === item.movie) score++; });
+
+            if (SCRIPT_URL !== "METS_TON_URL_ICI") {
+                // Construction propre de l'URL avec les paramètres sécurisés
+                const urlComplete = SCRIPT_URL + 
+                    "?player=" + encodeURIComponent(name) + 
+                    "&score=" + score + 
+                    "&total=22" + 
+                    "&date=" + encodeURIComponent(new Date().toLocaleString('fr-FR'));
+
+                // Envoi de la requête en mode GET (ultra-compatible mobile)
+                fetch(urlComplete, {
+                    method: 'GET',
+                    mode: 'no-cors'
+                }).catch(e => console.log("Erreur envoi:", e));
+            }
+
+            document.getElementById('modal-box-content').innerHTML = `
+                <h3 style="color: #e5a93b; font-size: 1.8rem;">Merci ${name} !</h3>
+                <div style="font-size: 3.5rem; font-weight: bold; margin: 20px 0; color: #64d2ff;">${score} / 22</div>
+                <p style="color: #cbd5e1; margin-bottom: 20px; font-size: 0.9rem;">Ton score a été enregistré. Rejoue pour t'améliorer, les détails des erreurs restent masqués !</p>
+                <button onclick="window.location.reload()">Rejouer 🔄</button>
+            `;
+        }
+
 
         function selectCostume(id) {
             if (selectedCostumeId) document.getElementById(`costume-${selectedCostumeId}`).classList.remove('selected');
